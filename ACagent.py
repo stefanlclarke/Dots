@@ -2,6 +2,7 @@ import torch as T
 import numpy as np
 import gym
 import gym_dots
+from matplotlib import pyplot as plt
 
 class ACagent:
     def __init__(self, net, env, memory, gamma, lr):
@@ -11,8 +12,13 @@ class ACagent:
         self.gamma = gamma
         self.lr = lr
         self.optimizer = T.optim.Adam(self.ac.parameters(), lr=lr)
+        self.epoch_scores =[]
+
+    def score_plot(self):
+        plt.plot(self.epoch_scores)
 
     def train(self, epochs, steps_per_epoch):
+        self.epoch_scores = []
         for epoch in range(epochs):
             self.game.reset_frames()
             self.game.reset()
@@ -37,7 +43,7 @@ class ACagent:
             logprobs = []
             for state in self.memory.memory:
                 prevq = self.ac.critic.forward(state[0].double())
-                newq = self.ac.critic.forward(state[5].double())
+                newq = self.ac.critic.forward(state[5].double()).detach()
                 reward = state[3]
                 Qerror = (prevq - reward - self.gamma*newq)**2
                 Qerrors.append(Qerror)
@@ -70,3 +76,4 @@ class ACagent:
             print(f"EPOCH: {epoch}")
             print(f"AVG SCORE: {avg_score}")
             print(f"LOSS: {loss}")
+            self.epoch_scores.append(avg_score)

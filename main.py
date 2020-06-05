@@ -4,6 +4,7 @@ import gym
 import gym_dots
 from ACagent import ACagent
 from networks import Memory, AC
+from matplotlib import pyplot as plt
 
 env = gym.make('dots-v0')
 
@@ -16,4 +17,5 @@ learning_rate = 3e-4
 
 agent = ACagent(ac, env, memory, gamma, learning_rate)
 
-agent.train(1000,100)
+agent.train(10,100)
+agent.score_plot()
