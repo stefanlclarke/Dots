@@ -72,7 +72,7 @@ class ACagent:
             loss.backward()
             self.optimizer.step()
 
-            avg_score = sum(epoch_scores)/max(len(epoch_scores),1)
+            avg_score = (sum(epoch_scores) + self.game.score)/max(len(epoch_scores),1)
             print(f"EPOCH: {epoch}")
             print(f"AVG SCORE: {avg_score}")
             print(f"LOSS: {loss}")
