@@ -27,6 +27,7 @@ class ACagent:
             playing = True
             while playing:
                 old_state = self.game.get_state()
+                print('state: ', old_state)
                 actor_out = self.ac.actor.forward(old_state.double())
                 move_chosen = np.random.choice(2, p=actor_out.clone().detach().numpy())
                 reward, done, score = self.game.step(move_chosen)
@@ -53,10 +54,14 @@ class ACagent:
                 if move_chosen == 0:
                     ido = T.tensor([1,0])
                 elif move_chosen == 1:
-                    ido = T.tensor([1,0])
+                    ido = T.tensor([0,1])
                 else:
                     raise ValueError("Impossible move chosen")
+                print('probs: ', probs)
+                print('move: ', move_chosen)
+                print('ido: ', ido)
                 pty = (ido*probs).sum()
+                print('pty: ', pty)
                 logprob = T.log(pty)
                 logprobs.append(logprob)
 

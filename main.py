@@ -17,5 +17,5 @@ learning_rate = 3e-4
 
 agent = ACagent(ac, env, memory, gamma, learning_rate)
 
-agent.train(10,100)
+agent.train(800,1000)
 agent.score_plot()
